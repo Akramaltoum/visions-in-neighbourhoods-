@@ -26,7 +26,7 @@ MAX_LOOKUPS_PER_RUN = 15       # map lookups are slow and rate limited
 
 def connect():
     # prepare_threshold=None: the Supabase pooler (transaction mode) can't keep prepared statements.
-    return psycopg.connect(os.environ["DATABASE_URL"], prepare_threshold=None)
+    return psycopg.connect(os.environ["DATABASE_URL"], prepare_threshold=None, sslmode="require")
 
 
 def rescore_one(conn, house_id, lookup=True):
