@@ -1,0 +1,21 @@
+# Checks the live site once an hour. If it's down, this run fails and GitHub
+# emails the repository owner. Uses well under the free Actions minutes.
+name: Uptime check
+on:
+  schedule:
+    - cron: '23 * * * *'
+  workflow_dispatch:
+permissions: {}
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    steps:
+      - name: Check /healthz
+        run: |
+          for i in 1 2 3; do
+            body=$(curl -fsS --max-time 30 https://vision-in-neighborhoods.vercel.app/healthz) && echo "$body" | grep -q '"ok":true' && { echo "Up: $body"; exit 0; }
+            sleep 20
+          done
+          echo "Vision In Neighborhoods looks down: /healthz did not answer ok three times." >&2
+          exit 1
