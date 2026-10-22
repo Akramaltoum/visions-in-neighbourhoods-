@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Vision In Neighborhoods</title>
+<meta name="description" content="Every rental near McMaster in one place, rated on commute, food, social life, the inside of the house, and value.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Young+Serif&family=Figtree:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="/styles.css?v=2">
+<script src="/app.js?v=2" defer></script>
+</head>
+<body>
+<header><div class="wrap bar">
+  <button class="brand" id="home" type="button">Vision <span>In</span> Neighborhoods</button>
+  <div class="me">
+    <button class="listbtn" id="listBtn" type="button">Add a listing</button>
+    <button class="avatar" id="avatar" type="button" aria-haspopup="menu" aria-expanded="false" aria-label="Account menu">?</button>
+    <div class="menu" id="menu" role="menu" hidden></div>
+  </div>
+</div></header>
+
+<main class="wrap">
+  <section class="hero">
+    <h1>You check Rate My Prof before a 4-month class. Why sign a 12-month lease blind?</h1>
+    <p class="lead">Every rental near McMaster gets a page. Tenants who held the lease rate the inside, and the map rates the rest: commute, food, social life and value.</p>
+    <form class="search" id="searchForm" role="search">
+      <input id="q" type="search" placeholder="Got a place in mind? Search the street." autocomplete="off" aria-label="Search">
+    </form>
+    <div class="chips" id="areas"></div>
+    <div class="chips" id="filters"></div>
+  </section>
+
+  <section class="after" aria-labelledby="afterTitle">
+    <h2 id="afterTitle">Things students only found out after signing</h2>
+    <p class="meta">Examples of what tenant reviews catch. Real reviews replace these as they come in.</p>
+    <ul class="stories">
+      <li><span class="tag">Example</span>The heat was off for most of February and the landlord took three weeks to answer.</li>
+      <li><span class="tag">Example</span>Black mould behind the basement bedroom dresser, painted over before the viewing.</li>
+      <li><span class="tag">Example</span>Half the deposit kept for "cleaning" with no photos and no receipt.</li>
+      <li><span class="tag">Example</span>"10 minutes to campus" meant 10 minutes by car. Walking took 28.</li>
+    </ul>
+  </section>
+
+  <div class="rowhead">
+    <h2 id="resultsTitle">Check before you sign</h2>
+    <span class="meta" id="count"></span>
+  </div>
+  <div class="grid" id="grid"><p class="empty">Loading houses…</p></div>
+  <footer>
+    <p>Scores come from map data, public records and lease-verified tenant reviews. Opinions from anyone are shown but never change a score. <a href="/privacy.html">Privacy</a></p>
+  </footer>
+</main>
+
+<div class="scrim" id="scrim" hidden>
+  <div class="panel" id="panel" role="dialog" aria-modal="true" aria-labelledby="panelTitle"></div>
+</div>
+</body>
+</html>

@@ -1,0 +1,29 @@
+{
+  "name": "vision-in-neighborhoods",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Every rental near McMaster in one place, rated on commute, food, social life, the inside of the house and value.",
+  "main": "src/server.js",
+  "type": "commonjs",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "node --watch src/server.js",
+    "migrate": "node src/db/migrate.js",
+    "test": "node --test --test-concurrency=1 \"test/**/*.test.js\" && python3 -m unittest discover -s tests -q"
+  },
+  "dependencies": {
+    "compression": "^1.8.1",
+    "express": "^4.21.2",
+    "express-rate-limit": "^7.5.0",
+    "jsonwebtoken": "^9.0.2",
+    "nodemailer": "^7.0.10",
+    "pg": "^8.13.1"
+  },
+  "devDependencies": {
+    "pg-mem": "^3.0.5",
+    "supertest": "^7.0.0"
+  }
+}
