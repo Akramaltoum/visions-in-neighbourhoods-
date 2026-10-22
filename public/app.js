@@ -90,22 +90,27 @@ function houseSVG(h) {
   <rect x="0" y="266" width="400" height="6" fill="#c9c2b2"/></svg>`;
 }
 const photoOf = (h, url) => (url ? `<img src="${esc(url)}" alt="Photo of ${esc(h.address)}">` : houseSVG(h));
-const scoreBadge = (h) => (Object.keys(h.scores || {}).length ? h.overall.toFixed(1) : 'New');
 const money = (n) => `$${Math.round(n).toLocaleString('en-CA')}`;
 
 /* ---------- home ---------- */
+const scoreTone = (v) => (v >= 8 ? 'hi' : v >= 7 ? 'mid' : '');
 function card(h) {
   const l = h.listing;
-  const price = l ? `<p class="price"><b>${money(l.price.monthlyTotal ?? l.price.rentPerRoom)}</b>/room a month${l.price.utilitiesIncluded ? ' incl. utilities' : ''}</p>` : '<p class="meta">No active listing</p>';
+  const scored = Object.keys(h.scores || {}).length;
+  const badge = scored ? `<span class="score ${scoreTone(h.overall)}" title="Your match score">${h.overall.toFixed(1)}<small>/ 10</small></span>` : '<span class="score new">New</span>';
+  const rent = l ? `<div class="rent"><b>${money(l.price.monthlyTotal ?? l.price.rentPerRoom)}</b><span>/ room / mo</span></div>` : '';
   const tags = [];
-  if (h.walkMinutes != null) tags.push(`${h.walkMinutes} min walk to campus`);
+  if (l && l.price.utilitiesIncluded) tags.push('Utilities included');
   if (h.verifiedReviews) tags.push(`${h.verifiedReviews} verified review${h.verifiedReviews > 1 ? 's' : ''}`);
-  if (h.opinions) tags.push(`${h.opinions} opinion${h.opinions > 1 ? 's' : ''}`);
+  if (h.parkingSpots) tags.push(`${h.parkingSpots} parking`);
   if (l && l.price.status === 'stale') tags.push(`price checked ${l.price.lastChecked}`);
+  if (!l) tags.push('No active listing');
+  const walk = h.walkMinutes != null ? `${h.walkMinutes} min walk to campus` : 'Commute not rated yet';
   return `<article class="card" role="button" tabindex="0" data-id="${esc(h.id)}" aria-label="${esc(h.address)}, open">
-   <div class="photo">${photoOf(h, l && l.photo)}<span class="score" title="Your match score">${scoreBadge(h)}</span>${h.isSample ? '<span class="sample">Sample</span>' : ''}</div>
-   <div class="body"><h3>${esc(h.address)}</h3><p class="meta">${esc([h.houseType, l && `${l.bedrooms} bed`, h.neighbourhood].filter(Boolean).join(' · '))}</p>
-   ${price}<div class="tags">${tags.map((t) => `<span>${esc(t)}</span>`).join('')}</div></div></article>`;
+   <div class="photo">${photoOf(h, l && l.photo)}${badge}${h.isSample ? '<span class="sample">Sample</span>' : ''}</div>
+   <div class="body"><div class="top2"><div><h3>${esc(h.address)}</h3><p class="meta">${esc([h.houseType, l && `${l.bedrooms} bed`, h.neighbourhood].filter(Boolean).join(' · '))}</p></div>${rent}</div>
+   <div class="tags">${tags.map((t) => `<span>${esc(t)}</span>`).join('')}</div>
+   <div class="foot"><span>${esc(walk)}</span><span>${h.opinions || 0} opinion${h.opinions === 1 ? '' : 's'}</span></div></div></article>`;
 }
 
 async function loadHouses() {
@@ -125,7 +130,7 @@ async function loadHouses() {
 
 function renderGrid() {
   $('resultsTitle').textContent = query ? `Results for "${query}"` : areaFilter ? `Top rated in ${areaFilter}` : (me ? 'Check before you sign, ranked for you' : 'Check before you sign');
-  $('count').textContent = `${houses.length} ${houses.length === 1 ? 'house' : 'houses'}`;
+  $('count').textContent = `${houses.length} ${houses.length === 1 ? 'house' : 'houses'}${areaFilter ? ` in ${areaFilter}` : ' near McMaster'}, sorted by score.`;
   $('grid').innerHTML = houses.length ? houses.map(card).join('')
     : '<p class="empty">No houses match yet. Know one? Add a listing and it gets rated.</p>';
 }
@@ -143,6 +148,7 @@ $('areas').addEventListener('click', (e) => {
   areaFilter = areaFilter === b.dataset.a ? null : b.dataset.a;
   renderChips();
   loadHouses();
+  toResults();
 });
 $('filters').addEventListener('click', (e) => {
   const b = e.target.closest('.chip');
@@ -151,7 +157,8 @@ $('filters').addEventListener('click', (e) => {
   renderChips();
   loadHouses();
 });
-$('searchForm').addEventListener('submit', (e) => { e.preventDefault(); query = $('q').value.trim(); loadHouses(); });
+const toResults = () => $('houses').scrollIntoView({ behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
+$('searchForm').addEventListener('submit', (e) => { e.preventDefault(); query = $('q').value.trim(); loadHouses(); toResults(); });
 $('q').addEventListener('search', () => { if (!$('q').value) { query = ''; loadHouses(); } });
 $('grid').addEventListener('click', (e) => { const c = e.target.closest('.card'); if (c) openHouse(c.dataset.id); });
 $('grid').addEventListener('keydown', (e) => {
