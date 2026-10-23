@@ -5,15 +5,12 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Vision In Neighborhoods</title>
 <meta name="description" content="Every rental near McMaster in one place, rated on commute, food, social life, the inside of the house, and value.">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;1,9..144,400&family=Figtree:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
-<link rel="stylesheet" href="/styles.css?v=3">
-<script src="/app.js?v=3" defer></script>
+<link rel="stylesheet" href="/styles.css?v=4">
+<script src="/app.js?v=4" defer></script>
 </head>
 <body>
 <header><div class="wrap bar">
-  <button class="brand" id="home" type="button"><span class="logo" aria-hidden="true">V</span>Vision <span class="in">In</span> Neighborhoods</button>
+  <button class="brand" id="home" type="button">Vision in Neighborhoods</button>
   <div class="me">
     <button class="listbtn" id="listBtn" type="button">Add a listing</button>
     <button class="avatar" id="avatar" type="button" aria-haspopup="menu" aria-expanded="false" aria-label="Account menu">?</button>
@@ -23,35 +20,35 @@
 
 <main>
   <section class="hero"><div class="wrap">
-    <span class="pill"><i aria-hidden="true"></i>Houses near McMaster · lease-verified reviews</span>
-    <h1>You check Rate My Prof before a 4-month class. <em>Why sign a 12-month lease blind?</em></h1>
-    <p class="lead">The photos won't show the mould. The listing won't mention the heat dies in January. The students who lived there will. Look up any house near McMaster before you sign.</p>
+    <h1>Check the house before you sign the lease.</h1>
+    <p class="lead">You'd look up a prof before a 4-month class. A lease is 12 months. Read what past tenants say about the heat, the mould and the landlord first.</p>
     <form class="search" id="searchForm" role="search">
       <svg aria-hidden="true" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
-      <input id="q" type="search" placeholder="Got a place in mind? Search the street." autocomplete="off" aria-label="Search the street">
+      <input id="q" type="search" placeholder="Search a street" autocomplete="off" aria-label="Search a street">
+      <button class="go" type="submit">Search</button>
     </form>
-    <div class="chips" id="areas"></div>
+    <div class="areasRow"><span class="fine">Areas</span><div class="chips" id="areas"></div></div>
     <div class="chips" id="filters"></div>
   </div></section>
 
-  <section class="band" aria-labelledby="afterTitle"><div class="wrap">
-    <h2 id="afterTitle">Things students only found out after signing</h2>
+  <section class="wrap reports" aria-labelledby="afterTitle">
+    <h2 id="afterTitle">What tenants found out after signing</h2>
     <div class="quotes">
-      <figure><span class="tag">Example</span><blockquote>&ldquo;No heat for two weeks in February. Landlord stopped answering.&rdquo;</blockquote></figure>
-      <figure><span class="tag">Example</span><blockquote>&ldquo;Mould behind every dresser. The photos were taken in summer.&rdquo;</blockquote></figure>
-      <figure><span class="tag">Example</span><blockquote>&ldquo;Never got the $1,400 deposit back.&rdquo;</blockquote></figure>
+      <figure><span class="q bad">1.5</span><blockquote>"No heat for two weeks in February. Landlord stopped answering."</blockquote></figure>
+      <figure><span class="q bad">2.0</span><blockquote>"Mould behind every dresser. The photos were taken in summer."</blockquote></figure>
+      <figure><span class="q mid">2.5</span><blockquote>"Never got the $1,400 deposit back."</blockquote></figure>
     </div>
-    <p class="bandnote">Examples of what tenants report. Real reviews replace these as they come in. Don't let it be your house.</p>
-  </div></section>
+    <p class="fine">Example reviews. Real ones from lease-verified tenants replace these as they come in.</p>
+  </section>
 
   <section class="wrap results" id="houses">
     <div class="rowhead">
-      <div><h2 id="resultsTitle">Check before you sign</h2><p class="meta" id="count"></p></div>
+      <div><h2 id="resultsTitle">Houses near campus</h2><p class="meta" id="count"></p></div>
     </div>
     <div class="grid" id="grid"><p class="empty">Loading houses…</p></div>
   </section>
   <footer><div class="wrap">
-    <p>Vision In Neighborhoods · Hamilton, Ontario</p>
+    <p>Vision in Neighborhoods · Hamilton, Ontario</p>
     <p>Scores come from map data, public records and lease-verified tenant reviews. Opinions from anyone are shown but never change a score. <a href="/privacy.html">Privacy</a></p>
   </div></footer>
 </main>

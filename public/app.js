@@ -67,33 +67,14 @@ async function busy(button, fn) {
 }
 
 /* ---------- house pictures ---------- */
-const PALETTE = [['#c96f4a', '#f2e3cf'], ['#4f6d8a', '#e8e1d4'], ['#6f8a5a', '#efe6d6'], ['#8a5a6f', '#f0e4dc'], ['#b48a3c', '#efe9dc'], ['#3f7a78', '#e6ece6'], ['#7a4f3f', '#efe2d2'], ['#5b5f8a', '#e7e6ee']];
-function hash(s) { let h = 0; for (const c of s) h = (h * 31 + c.charCodeAt(0)) >>> 0; return h; }
-function houseSVG(h) {
-  const n = hash(h.id);
-  const [wall, trim] = PALETTE[n % PALETTE.length];
-  const v = n % 3;
-  const win = (x, y) => `<rect x="${x}" y="${y}" width="34" height="38" rx="2" fill="#fbe9b7" stroke="${trim}" stroke-width="4"/>`;
-  return `<svg viewBox="0 0 400 300" role="img" aria-label="Illustration of the house" preserveAspectRatio="xMidYMid slice">
-  <defs><linearGradient id="s${n}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="var(--sky2)"/><stop offset="1" stop-color="var(--sky1)"/></linearGradient></defs>
-  <rect width="400" height="300" fill="url(#s${n})"/>
-  <circle cx="${60 + v * 110}" cy="70" r="26" fill="#fff4d6" opacity=".8"/>
-  <ellipse cx="${v === 1 ? 340 : 60}" cy="215" rx="58" ry="62" fill="#4d7a4a"/>
-  <rect x="${v === 1 ? 334 : 54}" y="230" width="12" height="40" fill="#5b4430"/>
-  <rect x="0" y="262" width="400" height="38" fill="#7e9a63"/>
-  <rect x="${v === 1 ? 40 : 110}" y="${v === 2 ? 150 : 120}" width="${v === 2 ? 240 : 200}" height="${v === 2 ? 115 : 145}" fill="${wall}"/>
-  <polygon points="${v === 1 ? 25 : 95},${v === 2 ? 152 : 122} ${v === 1 ? 140 : 210},${v === 2 ? 95 : 55} ${v === 1 ? 255 : 325},${v === 2 ? 152 : 122}" fill="var(--roof)"/>
-  ${v === 2 ? '' : win(v === 1 ? 62 : 132, 150) + win(v === 1 ? 184 : 254, 150)}
-  ${win(v === 1 ? 62 : 132, v === 2 ? 180 : 210)}
-  <rect x="${v === 1 ? 122 : 192}" y="${v === 2 ? 195 : 205}" width="34" height="${v === 2 ? 70 : 60}" fill="${trim}"/>
-  ${v === 2 ? win(v === 1 ? 184 : 274, 180) : win(v === 1 ? 184 : 254, 210)}
-  <rect x="0" y="266" width="400" height="6" fill="#c9c2b2"/></svg>`;
+function houseSVG() {
+  return `<div class="nophoto" role="img" aria-label="No photo yet"><svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"><path d="M3 11 12 4l9 7"/><path d="M5 10v10h14V10"/><path d="M10 20v-5h4v5"/></svg><span>No photo yet</span></div>`;
 }
 const photoOf = (h, url) => (url ? `<img src="${esc(url)}" alt="Photo of ${esc(h.address)}">` : houseSVG(h));
 const money = (n) => `$${Math.round(n).toLocaleString('en-CA')}`;
 
 /* ---------- home ---------- */
-const scoreTone = (v) => (v >= 8 ? 'hi' : v >= 7 ? 'mid' : '');
+const scoreTone = (v) => (v >= 7.5 ? 'hi' : v >= 5.5 ? 'mid' : 'lo');
 function card(h) {
   const l = h.listing;
   const scored = Object.keys(h.scores || {}).length;
@@ -129,7 +110,7 @@ async function loadHouses() {
 }
 
 function renderGrid() {
-  $('resultsTitle').textContent = query ? `Results for "${query}"` : areaFilter ? `Top rated in ${areaFilter}` : (me ? 'Check before you sign, ranked for you' : 'Check before you sign');
+  $('resultsTitle').textContent = query ? `Results for "${query}"` : areaFilter ? `Top rated in ${areaFilter}` : (me ? 'Houses near campus, ranked for you' : 'Houses near campus');
   $('count').textContent = `${houses.length} ${houses.length === 1 ? 'house' : 'houses'}${areaFilter ? ` in ${areaFilter}` : ' near McMaster'}, sorted by score.`;
   $('grid').innerHTML = houses.length ? houses.map(card).join('')
     : '<p class="empty">No houses match yet. Know one? Add a listing and it gets rated.</p>';
